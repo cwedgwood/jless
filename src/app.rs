@@ -1,8 +1,8 @@
-use std::error::Error;
+// use std::error::Error;
 use std::io;
 use std::io::Write;
 
-use clipboard::{ClipboardContext, ClipboardProvider};
+// use clipboard::{ClipboardContext, ClipboardProvider};
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use termion::event::Key;
@@ -28,7 +28,7 @@ pub struct App {
     input_filename: String,
     search_state: SearchState,
     message: Option<(String, MessageSeverity)>,
-    clipboard_context: Result<ClipboardContext, Box<dyn Error>>,
+    // clipboard_context: Result<ClipboardContext, Box<dyn Error>>,
 }
 
 // State to determine how to process the next event input.
@@ -96,7 +96,7 @@ impl App {
             input_filename,
             search_state: SearchState::empty(),
             message: None,
-            clipboard_context: ClipboardProvider::new(),
+            // clipboard_context: ClipboardProvider::new(),
         })
     }
 
@@ -208,17 +208,17 @@ impl App {
                     }
                 }
                 KeyEvent(Key::Char('y')) => {
-                    match &self.clipboard_context {
-                        Ok(_) => {
-                            self.input_state = InputState::PendingYCommand;
-                            self.input_buffer.clear();
-                            self.buffer_input(b'y');
-                        }
-                        Err(err) => {
-                            let msg = format!("Unable to access clipboard: {}", err);
-                            self.set_error_message(msg);
-                        }
-                    }
+                    // match &self.clipboard_context {
+                    //     Ok(_) => {
+                    //         self.input_state = InputState::PendingYCommand;
+                    //         self.input_buffer.clear();
+                    //         self.buffer_input(b'y');
+                    //     }
+                    //     Err(err) => {
+                    //         let msg = format!("Unable to access clipboard: {}", err);
+                    //         self.set_error_message(msg);
+                    //     }
+                    // }
 
                     None
                 }
@@ -624,7 +624,7 @@ impl App {
 
     fn copy_content(&mut self, copy_target: CopyTarget) {
         // Checked when the user first hits 'y'.
-        let clipboard = self.clipboard_context.as_mut().unwrap();
+        // let clipboard = self.clipboard_context.as_mut().unwrap();
 
         let json = &self.viewer.flatjson.1;
         let focused_row_index = self.viewer.focused_row;
@@ -683,13 +683,13 @@ impl App {
             }
         };
 
-        if let Err(err) = clipboard.set_contents(content) {
-            self.set_error_message(format!(
-                "Unable to copy {} to clipboard: {}",
-                content_desc, err
-            ));
-        } else {
-            self.set_info_message(format!("Copied {} to clipboard", content_desc));
-        }
+        // if let Err(err) = clipboard.set_contents(content) {
+        //     self.set_error_message(format!(
+        //         "Unable to copy {} to clipboard: {}",
+        //         content_desc, err
+        //     ));
+        // } else {
+        //     self.set_info_message(format!("Copied {} to clipboard", content_desc));
+        // }
     }
 }
